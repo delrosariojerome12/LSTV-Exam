@@ -1,17 +1,18 @@
 import React from "react";
 import {GiHamburgerMenu} from "react-icons/gi";
 import Logo from "../assets/logo.jpg";
-import {useNavigate} from "react-router-dom";
-import {useSelector} from "react-redux";
-const Navbar = () => {
+import {useNavigate, useLocation} from "react-router-dom";
+import {useSelector, useDispatch} from "react-redux";
+import {handleClearUserStatus} from "../features/auth/auth";
+
+const Navbar = React.memo(() => {
   const {user} = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   const links = [
-    // {
-    //   path: "/",
-    //   page: "Landing Page",
-    // },
     {
       path: "/login",
       page: "Login",
@@ -42,19 +43,26 @@ const Navbar = () => {
           );
         });
     }
-    return links.map((item, index) => {
-      const {page, path} = item;
-      return (
-        <button
-          onClick={() => {
-            navigate(path);
-          }}
-          key={index}
-        >
-          {page}
-        </button>
-      );
-    });
+    return links
+      .filter((item) => {
+        if (currentPath.includes("home")) {
+          return item.page != "Home" && item.page != "Login";
+        }
+        return item.page != "Login";
+      })
+      .map((item, index) => {
+        const {page, path} = item;
+        return (
+          <button
+            onClick={() => {
+              navigate(path);
+            }}
+            key={index}
+          >
+            {page}
+          </button>
+        );
+      });
   };
 
   return (
@@ -63,9 +71,21 @@ const Navbar = () => {
         <img src={Logo} alt="LSTV Logo" />
         <h1>Lee Systems Technology Ventures</h1>
       </div>
-      <ul className="links-holder">{renderLinks()}</ul>
+      <ul className="links-holder">
+        {renderLinks()}
+        {user && (
+          <button
+            onClick={() => {
+              dispatch(handleClearUserStatus());
+              navigate("/");
+            }}
+          >
+            Logout
+          </button>
+        )}
+      </ul>
     </nav>
   );
-};
+});
 
 export default Navbar;

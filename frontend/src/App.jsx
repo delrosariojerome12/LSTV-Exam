@@ -1,15 +1,20 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Route, Routes} from "react-router-dom";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import HomeMenu from "./pages/HomeMenu";
 import PageNotFound from "./pages/PageNotFound";
-import {useSelector} from "react-redux";
-
+import {useSelector, useDispatch} from "react-redux";
+import {handleUserActive} from "./features/auth/auth";
 const App = React.memo(() => {
   const {user} = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
-  console.log(user);
+  useEffect(() => {
+    if (!user && localStorage.getItem("token")) {
+      dispatch(handleUserActive());
+    }
+  }, []);
 
   if (!user) {
     return (

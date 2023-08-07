@@ -5,6 +5,7 @@ const initialState = {
   isLoginError: false,
   isLoginLoading: false,
   user: null,
+  statusMessage: null,
 };
 
 export const handleLogin = createAsyncThunk(
@@ -22,7 +23,6 @@ export const handleLogin = createAsyncThunk(
           "Content-Type": "application/x-www-form-urlencoded",
         },
       });
-      console.log(res);
       return res;
     } catch (error) {
       console.log(error);
@@ -35,15 +35,28 @@ export const handleLogin = createAsyncThunk(
 const authReducer = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    handleUserActive: (state, action) => {
+      state.user = localStorage.getItem("token");
+    },
+    handleClearUserStatus: (state, action) => {
+      state.user = null;
+      localStorage.removeItem("token");
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(handleLogin.pending, (state, action) => {
       state.isLoginLoading = true;
       state.isLoginError = false;
     });
     builder.addCase(handleLogin.fulfilled, (state, action) => {
+      const {username, message} = action.payload;
+      console.log(message);
       state.isLoginLoading = false;
       state.isLoginError = false;
+      state.user = username;
+      localStorage.setItem("token", username);
+      // state.statusMessage =
     });
     builder.addCase(handleLogin.rejected, (state, action) => {
       state.isLoginLoading = false;
@@ -52,6 +65,6 @@ const authReducer = createSlice({
   },
 });
 
-export const {} = authReducer.actions;
+export const {handleUserActive, handleClearUserStatus} = authReducer.actions;
 
 export default authReducer.reducer;

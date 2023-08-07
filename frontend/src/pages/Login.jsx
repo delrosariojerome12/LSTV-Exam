@@ -26,6 +26,7 @@ const Login = React.memo(() => {
     } else {
       console.log("submit");
       dispatch(handleLogin({user: {username, password}}));
+      navigate("/home");
     }
   };
 

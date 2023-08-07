@@ -31,9 +31,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // Password is correct, create a session
             $_SESSION["id"] = $row["id"];
             $_SESSION["username"] = $row["username"];
-
             // Return success response
-            echo json_encode(array("message" => "Login successful."));
+            // echo json_encode(array("message" => "Login successful."));
+            // exit;
+            echo json_encode(array("message" => "Login successful.", "username" => $row["username"]));
             exit;
         } else {
             // Password is incorrect
