@@ -2,25 +2,35 @@ import React, {useState, useRef} from "react";
 import AnimatedBg from "../components/AnimatedBg";
 import {FaEye, FaEyeSlash, FaLock, FaUser} from "react-icons/fa";
 import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 import Logo from "../assets/logo.jpg";
-
+import {handleLogin} from "../features/auth/auth";
+import axios from "axios";
 const Login = React.memo(() => {
+  const {isLoginError, isLoginLoading, user} = useSelector(
+    (state) => state.auth
+  );
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [user, setUser] = useState("");
+  const [username, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordShown, setIsPasswordShown] = useState(false);
 
   const refPassword = useRef();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("submit");
+    if (!username || !password) {
+      console.log("complete the fields!");
+    } else {
+      console.log("submit");
+      dispatch(handleLogin({user: {username, password}}));
+    }
   };
 
   const handleOnChange = (value, id) => {
-    if (id === "user") {
-      console.log(value);
+    if (id === "username") {
       setUser(value);
     } else if (id === "password") {
       setPassword(value);
@@ -54,9 +64,9 @@ const Login = React.memo(() => {
         <form onSubmit={handleSubmit}>
           <div className="input-contain">
             <input
-              id="user"
+              id="username"
               type="text"
-              value={user}
+              value={username}
               required
               onChange={(e) => {
                 handleOnChange(e.target.value, e.target.id);
@@ -65,7 +75,7 @@ const Login = React.memo(() => {
             <div className="placeholder-container">
               <label
                 className={
-                  user ? "placeholder-text active" : "placeholder-text"
+                  username ? "placeholder-text active" : "placeholder-text"
                 }
               >
                 <div className={"text"}>

@@ -95,7 +95,7 @@ button {
   display: flex;
   flex-direction: column;
   gap: 3rem;
-  padding: 3rem 1rem 1rem 1rem;
+  padding: 7rem 3rem 3rem 3rem;
 }
 .login-page .left-side form {
   display: flex;
