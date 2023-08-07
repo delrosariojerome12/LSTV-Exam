@@ -77,7 +77,7 @@ const Navbar = React.memo(() => {
           <button
             onClick={() => {
               dispatch(handleClearUserStatus());
-              navigate("/");
+              navigate("/login");
             }}
           >
             Logout

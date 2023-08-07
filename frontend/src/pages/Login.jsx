@@ -115,7 +115,9 @@ const Login = React.memo(() => {
             <div className="eye-container">{renderEyeIcon()}</div>
           </div>
 
-          <button type="submit">Login</button>
+          <button type="submit">
+            {isLoginLoading ? "Logging in" : "Log in"}
+          </button>
         </form>
       </div>
       <div className="right-side">

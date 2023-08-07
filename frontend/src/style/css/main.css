@@ -3,6 +3,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,700;1,400;1,500;1,700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,700;1,400;1,500;1,700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,700;1,400;1,500;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,700;1,400;1,500;1,700&display=swap");
 * {
   padding: 0;
   margin: 0;
@@ -316,4 +317,54 @@ button {
 }
 .landing-page {
   padding: 10rem 0rem 0rem 0rem;
+}
+
+.home-menu {
+  padding: 13rem 3rem 3rem 3rem;
+  height: 100%;
+  width: 100%;
+}
+.home-menu .employees-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  max-height: 700px;
+  overflow-y: scroll;
+  transform: translate(-50%, -50%);
+  background-color: #55608f;
+}
+.home-menu .employees-container table {
+  width: 800px;
+  height: 800px;
+  border-collapse: collapse;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+.home-menu .employees-container th,
+.home-menu .employees-container td {
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+.home-menu .employees-container th {
+  text-align: left;
+}
+.home-menu .employees-container thead th {
+  background-color: #55608f;
+}
+.home-menu .employees-container tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.home-menu .employees-container tbody td {
+  position: relative;
+}
+.home-menu .employees-container tbody td:hover:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -9999px;
+  bottom: -9999px;
+  background-color: rgba(255, 255, 255, 0.2);
+  z-index: -1;
 }/*# sourceMappingURL=main.css.map */

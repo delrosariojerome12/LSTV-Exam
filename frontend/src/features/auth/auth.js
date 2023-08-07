@@ -10,7 +10,7 @@ const initialState = {
 
 export const handleLogin = createAsyncThunk(
   "/user/login",
-  async ({user}, rejectWithValue) => {
+  async ({user}, {rejectWithValue}) => {
     try {
       const url = "http://localhost/LSTV/backend/login.php";
       const formData = new URLSearchParams();
@@ -45,23 +45,25 @@ const authReducer = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(handleLogin.pending, (state, action) => {
-      state.isLoginLoading = true;
-      state.isLoginError = false;
-    });
-    builder.addCase(handleLogin.fulfilled, (state, action) => {
-      const {username, message} = action.payload;
-      console.log(message);
-      state.isLoginLoading = false;
-      state.isLoginError = false;
-      state.user = username;
-      localStorage.setItem("token", username);
-      // state.statusMessage =
-    });
-    builder.addCase(handleLogin.rejected, (state, action) => {
-      state.isLoginLoading = false;
-      state.isLoginError = true;
-    });
+    // login
+    builder
+      .addCase(handleLogin.pending, (state, action) => {
+        state.isLoginLoading = true;
+        state.isLoginError = false;
+      })
+      .addCase(handleLogin.fulfilled, (state, action) => {
+        const {username, message} = action.payload;
+        console.log(message);
+        state.isLoginLoading = false;
+        state.isLoginError = false;
+        state.user = username;
+        localStorage.setItem("token", username);
+        // state.statusMessage =
+      })
+      .addCase(handleLogin.rejected, (state, action) => {
+        state.isLoginLoading = false;
+        state.isLoginError = true;
+      });
   },
 });
 

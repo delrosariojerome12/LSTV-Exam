@@ -1,8 +1,6 @@
 <?php
 require_once 'db_connect.php';
 
-
-
 // Fetch data from the "users" table
 $sql = "SELECT * FROM employeefile";
 $result = mysqli_query($conn, $sql);
