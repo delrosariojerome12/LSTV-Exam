@@ -1,13 +1,12 @@
-import React, {useState, useRef} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import AnimatedBg from "../components/AnimatedBg";
 import {FaEye, FaEyeSlash, FaLock, FaUser} from "react-icons/fa";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import Logo from "../assets/logo.jpg";
 import {handleLogin} from "../features/auth/auth";
-import axios from "axios";
 const Login = React.memo(() => {
-  const {isLoginError, isLoginLoading, user} = useSelector(
+  const {isLoginError, isLoginLoading, user, statusMessage} = useSelector(
     (state) => state.auth
   );
   const dispatch = useDispatch();
@@ -26,7 +25,7 @@ const Login = React.memo(() => {
     } else {
       console.log("submit");
       dispatch(handleLogin({user: {username, password}}));
-      navigate("/home");
+      // navigate("/home");
     }
   };
 
@@ -114,7 +113,7 @@ const Login = React.memo(() => {
             </div>
             <div className="eye-container">{renderEyeIcon()}</div>
           </div>
-
+          {isLoginError && <p style={{color: "red"}}>{statusMessage}</p>}
           <button type="submit">
             {isLoginLoading ? "Logging in" : "Log in"}
           </button>

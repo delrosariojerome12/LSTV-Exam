@@ -5,21 +5,16 @@ import {getAllEmployees} from "../features/employees/employees";
 import Navbar from "../components/Navbar";
 import Employee from "../components/Employee";
 import {useTable} from "react-table";
+import {FaTrash, FaEdit} from "react-icons/fa";
+import CreateEmployee from "../components/CreateEmployee";
 
 const HomeMenu = React.memo(() => {
-  const [isTile, setTile] = useState(false);
+  const [isAddEmployeeOpen, setAddEmployeeOpen] = useState(false);
   const {employees, isFetchAllLoading, isFetchAllError} = useSelector(
     (state) => state.employees
   );
   const dispatch = useDispatch();
 
-  const renderEmployees = () => {
-    return employees.map((item, index) => {
-      return <Employee key={index} employeeDetails={item} />;
-    });
-  };
-
-  // const data = useMemo(() => employees, []);
   const columns = useMemo(
     () => [
       {
@@ -31,7 +26,7 @@ const HomeMenu = React.memo(() => {
         accessor: "fullname",
       },
       {
-        Header: "gender",
+        Header: "Gender",
         accessor: "gender",
       },
       {
@@ -71,31 +66,23 @@ const HomeMenu = React.memo(() => {
     dispatch(getAllEmployees({x: "test"}));
   }, []);
 
-  // if (isFetchAllLoading) {
-  //   return (
-  //     <section className="home-menu">
-  //       <Navbar />
-  //       <h1>Loading...</h1>
-  //     </section>
-  //   );
-  // }
-
-  // if (employees.length === 0) {
-  //   return (
-  //     <section className="home-menu">
-  //       <Navbar />
-  //       <h1>No employees</h1>
-  //     </section>
-  //   );
-  // }
-
-  console.log(employees);
-
   return (
     <section className="home-menu">
       <Navbar />
+      <div className="middle-bar">
+        <button
+          onClick={() => {
+            setAddEmployeeOpen(true);
+          }}
+        >
+          Add Employee
+        </button>
+      </div>
+
       {isFetchAllLoading ? (
         <h1>Loading...</h1>
+      ) : isFetchAllError ? (
+        <h1>Error fetching data from the server.</h1>
       ) : employees.length === 0 ? (
         <h1>No employees</h1>
       ) : (
@@ -109,23 +96,38 @@ const HomeMenu = React.memo(() => {
                       {column.render("Header")}
                     </th>
                   ))}
+                  <th>Actions</th>
                 </tr>
               ))}
             </thead>
             <tbody {...getTableBodyProps()}>
               {rows.map((row) => {
-                prepareRow(row); // Call prepareRow before mapping over cells
+                prepareRow(row);
                 return (
                   <tr {...row.getRowProps()}>
                     {row.cells.map((cell) => (
                       <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                     ))}
+                    <td>
+                      <button onClick={() => handleEdit(row.original)}>
+                        <FaEdit />
+                        Edit
+                      </button>
+                      <button onClick={() => handleDelete(row.original)}>
+                        <FaTrash />
+                        <p>Delete</p>
+                      </button>
+                    </td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
         </div>
+      )}
+
+      {isAddEmployeeOpen && (
+        <CreateEmployee setAddEmployeeOpen={setAddEmployeeOpen} />
       )}
     </section>
   );

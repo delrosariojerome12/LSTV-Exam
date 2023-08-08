@@ -26,8 +26,7 @@ export const handleLogin = createAsyncThunk(
       return res;
     } catch (error) {
       console.log(error);
-      // Handle signup error and state updates here
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -52,8 +51,9 @@ const authReducer = createSlice({
         state.isLoginError = false;
       })
       .addCase(handleLogin.fulfilled, (state, action) => {
+        console.log(action.payload);
         const {username, message} = action.payload;
-        console.log(message);
+        // console.log(message);
         state.isLoginLoading = false;
         state.isLoginError = false;
         state.user = username;
@@ -61,8 +61,10 @@ const authReducer = createSlice({
         // state.statusMessage =
       })
       .addCase(handleLogin.rejected, (state, action) => {
+        console.log(action.payload);
         state.isLoginLoading = false;
         state.isLoginError = true;
+        state.statusMessage = action.payload.message;
       });
   },
 });

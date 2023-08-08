@@ -4,6 +4,8 @@ const initialState = {
   isFetchAllLoading: false,
   isFetchAllError: false,
   employees: [],
+  isCreateLoading: false,
+  isCreateError: false,
 };
 
 export const getAllEmployees = createAsyncThunk(
@@ -16,6 +18,21 @@ export const getAllEmployees = createAsyncThunk(
     } catch (error) {
       rejectWithValue(error.message);
     }
+  }
+);
+export const createEmployee = createAsyncThunk(
+  "/employees/createEmployee",
+  async ({user}, {rejectWithValue}) => {
+    console.log(user);
+    // try {
+    //   const url = "http://localhost/LSTV/backend/createEmployee.php";
+    //   const formData = new URLSearchParams();
+
+    //   const {data: res} = await axios.post(url);
+    //   return res;
+    // } catch (error) {
+    //   rejectWithValue(error.message);
+    // }
   }
 );
 
@@ -36,6 +53,20 @@ export const employeesReducer = createSlice({
         state.employees = [...action.payload];
       })
       .addCase(getAllEmployees.rejected, (state, action) => {
+        state.isFetchAllLoading = false;
+        state.isFetchAllError = true;
+      });
+    builder
+      .addCase(createEmployee.pending, (state, action) => {
+        state.isFetchAllLoading = true;
+        state.isFetchAllError = false;
+      })
+      .addCase(createEmployee.fulfilled, (state, action) => {
+        state.isFetchAllLoading = false;
+        state.isFetchAllError = false;
+        state.employees = [...action.payload];
+      })
+      .addCase(createEmployee.rejected, (state, action) => {
         state.isFetchAllLoading = false;
         state.isFetchAllError = true;
       });

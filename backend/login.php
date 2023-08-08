@@ -1,6 +1,11 @@
 <?php
+
 session_start();
 require_once 'db_connect.php';
+header("Access-Control-Allow-Origin: http://localhost:3000");
+header('Access-Control-Allow-Origin: *'); // This line might not be necessary
+header('Content-Type: application/json');
+header("Access-Control-Allow-Headers: Content-Type"); 
 
 // Check if the request method is POST
 if ($_SERVER["REQUEST_METHOD"] === "POST") {

@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes, Navigate} from "react-router-dom";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import HomeMenu from "./pages/HomeMenu";
@@ -33,6 +33,7 @@ const App = React.memo(() => {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/home" element={<HomeMenu />} />
+        <Route path="/login" element={<Navigate to={"/home"} />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </section>
