@@ -328,6 +328,7 @@ button {
   display: grid;
   grid-template-rows: 10rem 8rem auto;
   gap: 1rem;
+  overflow: hidden;
 }
 .home-menu .middle-bar {
   grid-row: 2/3;
@@ -444,6 +445,61 @@ button {
   height: 100%;
   background-color: rgba(150, 150, 150, 0.459);
 }
+.home-menu .delete-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border-radius: 1rem;
+  height: 60rem;
+  width: 50rem;
+  z-index: 4;
+  padding: 2rem;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 1rem;
+}
+.home-menu .delete-modal .employee-details {
+  border: solid 1px #ccc;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+.home-menu .delete-modal button:nth-child(1) {
+  background-color: #28a8c3;
+}
+.home-menu .delete-modal button:nth-child(1):hover {
+  background-color: #fff;
+  border: solid 2px #28a8c3;
+  color: #28a8c3;
+}
+.home-menu .delete-modal button:nth-child(2) {
+  background-color: #c32828;
+}
+.home-menu .delete-modal button:nth-child(2):hover {
+  background-color: #fff;
+  border: solid 2px #c32828;
+  color: #c32828;
+}
+.home-menu .edit-modal .btn-container button:nth-child(1) {
+  background-color: #28a8c3;
+}
+.home-menu .edit-modal .btn-container button:nth-child(1):hover {
+  background-color: #fff;
+  border: solid 2px #28a8c3;
+  color: #28a8c3;
+}
+.home-menu .edit-modal .btn-container button:nth-child(2) {
+  background-color: #34c328;
+}
+.home-menu .edit-modal .btn-container button:nth-child(2):hover {
+  background-color: #fff;
+  border: solid 2px #34c328;
+  color: #34c328;
+}
 .home-menu .crud {
   position: absolute;
   top: 50%;
@@ -479,6 +535,14 @@ button {
   flex-direction: column;
   border-radius: 0.5rem;
   gap: 1rem;
+}
+.home-menu .crud form .input-contain:nth-child(3) input + .placeholder-container .placeholder-text {
+  top: 0%;
+  left: 0%;
+  background-color: #fff;
+  font-size: 1.1rem;
+  color: black;
+  scale: 0.8;
 }
 .home-menu .crud form .input-contain .placeholder-container {
   position: absolute;
@@ -606,4 +670,25 @@ button {
   padding: 1rem;
   display: flex;
   gap: 1rem;
+}
+.home-menu .success-modal {
+  position: absolute;
+  bottom: 1%;
+  right: -300px;
+  z-index: 5;
+  background-color: #349cc3;
+  height: 7rem;
+  width: 30rem;
+  color: #fff;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  transition: all 0.3s ease-in-out;
+  text-align: center;
+  font-size: 1.6rem;
+}
+.home-menu .showed {
+  transform: translateX(-310px);
 }/*# sourceMappingURL=main.css.map */

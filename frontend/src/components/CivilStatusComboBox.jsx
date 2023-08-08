@@ -3,11 +3,11 @@ import Select from "react-select";
 
 const CivilStatusComboBox = React.memo(({civilstatus, setCivilStatus}) => {
   const civilStatusOptions = [
-    {value: "single", label: "Single"},
-    {value: "married", label: "Married"},
-    {value: "divorced", label: "Divorced"},
-    {value: "widowed", label: "Widowed"},
-    {value: "other", label: "Other"},
+    {value: "Single", label: "Single"},
+    {value: "Married", label: "Married"},
+    {value: "Divorced", label: "Divorced"},
+    {value: "Widowed", label: "Widowed"},
+    {value: "Other", label: "Other"},
   ];
 
   const handleCivilStatusChange = (selectedOption) => {

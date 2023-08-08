@@ -6,6 +6,12 @@ const initialState = {
   employees: [],
   isCreateLoading: false,
   isCreateError: false,
+  isAddEmployeeOpen: false,
+  displayMessage: "",
+  isDisplayMessageOpen: false,
+  isDeleteModalOpen: false,
+  selectedEmployee: null,
+  isEditModalOpen: false,
 };
 
 export const getAllEmployees = createAsyncThunk(
@@ -16,7 +22,7 @@ export const getAllEmployees = createAsyncThunk(
       const {data: res} = await axios.get(url);
       return res;
     } catch (error) {
-      rejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -25,39 +31,56 @@ export const createEmployee = createAsyncThunk(
   async ({employee}, {rejectWithValue}) => {
     try {
       const url = "http://localhost/LSTV/backend/createEmployee.php";
-      const formData = new URLSearchParams();
-      const {
-        fullname,
-        gender,
-        age,
-        birthdate,
-        salary,
-        isactive,
-        address,
-        contactnum,
-        civilstat,
-      } = employee;
-
-      formData.append("fullname", fullname);
-      formData.append("gender", gender);
-      formData.append("age", age);
-      formData.append("birthdate", birthdate);
-      formData.append("salary", salary);
-      formData.append("isactive", isactive);
-      formData.append("address", address);
-      formData.append("contactnum", contactnum);
-      formData.append("civilstat", civilstat);
 
       const {data: res} = await axios.post(url, employee, {
         headers: {
-          // "Content-Type": "application/json",
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
       });
-      console.log(res);
       return res;
     } catch (error) {
-      rejectWithValue(error.message);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+export const deleteEmployee = createAsyncThunk(
+  "/employees/deleteEmployee",
+  async ({recid}, {rejectWithValue}) => {
+    try {
+      const url = "http://localhost/LSTV/backend/deleteEmployee.php";
+      const {data: res} = await axios.delete(url, {
+        data: {recid}, // Pass the data payload containing recid
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return res;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const editEmployee = createAsyncThunk(
+  "/employees/editEmployee",
+  async ({recid, updatedEmployee}, {rejectWithValue}) => {
+    try {
+      const url = "http://localhost/LSTV/backend/editEmployee.php";
+      const {data: res} = await axios.put(
+        url,
+        {
+          recid, // Pass the recid
+          ...updatedEmployee, // Pass the updated fields
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return res;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -65,7 +88,29 @@ export const createEmployee = createAsyncThunk(
 export const employeesReducer = createSlice({
   name: "employees",
   initialState,
-  reducers: {},
+  reducers: {
+    handleAddEmployees: (state, action) => {
+      state.isAddEmployeeOpen = !state.isAddEmployeeOpen;
+    },
+    handleRemoveMessage: (state, action) => {
+      state.isDisplayMessageOpen = false;
+      console.log("testomg");
+    },
+    handleDeleteModal: (state, action) => {
+      state.isDeleteModalOpen = !state.isDeleteModalOpen;
+      if (action.payload.employee) {
+        const {employee} = action.payload;
+        state.selectedEmployee = employee;
+      }
+    },
+    handleEditModal: (state, action) => {
+      state.isEditModalOpen = !state.isEditModalOpen;
+      if (action.payload.employee) {
+        const {employee} = action.payload;
+        state.selectedEmployee = employee;
+      }
+    },
+  },
   extraReducers: (builder) => {
     // get all employees
     builder
@@ -88,17 +133,70 @@ export const employeesReducer = createSlice({
         state.isFetchAllError = false;
       })
       .addCase(createEmployee.fulfilled, (state, action) => {
+        const {employees} = action.payload;
         state.isFetchAllLoading = false;
         state.isFetchAllError = false;
-        // state.employees = [...action.payload];
+        state.employees = [...employees];
+        state.isAddEmployeeOpen = false;
+        state.displayMessage = "Employee added successfully";
+        state.isDisplayMessageOpen = true;
       })
       .addCase(createEmployee.rejected, (state, action) => {
         state.isFetchAllLoading = false;
         state.isFetchAllError = true;
+        state.displayMessage = "Something went wrong";
+        state.isDisplayMessageOpen = true;
+      });
+    // delete
+    builder
+      .addCase(deleteEmployee.pending, (state, action) => {
+        state.isFetchAllLoading = true;
+        state.isFetchAllError = false;
+      })
+      .addCase(deleteEmployee.fulfilled, (state, action) => {
+        state.isFetchAllLoading = false;
+        state.isFetchAllError = false;
+        state.employees = [...action.payload];
+        state.isDeleteModalOpen = false;
+        state.displayMessage = "Employee deleted successfully";
+        state.isDisplayMessageOpen = true;
+      })
+      .addCase(deleteEmployee.rejected, (state, action) => {
+        state.isFetchAllLoading = false;
+        state.isFetchAllError = true;
+        state.isDeleteModalOpen = false;
+        state.displayMessage = "Something went wrong";
+        state.isDisplayMessageOpen = true;
+      });
+    // edit
+    builder
+      .addCase(editEmployee.pending, (state, action) => {
+        state.isFetchAllLoading = true;
+        state.isFetchAllError = false;
+      })
+      .addCase(editEmployee.fulfilled, (state, action) => {
+        state.isFetchAllLoading = false;
+        state.isFetchAllError = false;
+        state.employees = [...action.payload];
+        state.isDeleteModalOpen = false;
+        state.displayMessage = "Employee deleted successfully";
+        state.isDisplayMessageOpen = true;
+      })
+      .addCase(editEmployee.rejected, (state, action) => {
+        state.isFetchAllLoading = false;
+        state.isFetchAllError = true;
+        state.isDeleteModalOpen = false;
+        state.displayMessage = "Something went wrong";
+        state.isDisplayMessageOpen = true;
       });
   },
 });
 
-export const {} = employeesReducer.actions;
+export const {
+  handleAddEmployees,
+  handleRemoveMessage,
+  handleDeleteModal,
+  handleEditModal,
+} = employeesReducer.actions;
 
 export default employeesReducer.reducer;

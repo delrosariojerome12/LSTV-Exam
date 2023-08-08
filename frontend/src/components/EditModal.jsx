@@ -1,55 +1,30 @@
 import React, {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {editEmployee, handleEditModal} from "../features/employees/employees";
 import RadioButton from "./RadioButton";
 import CivilStatusComboBox from "./CivilStatusComboBox";
-import {createEmployee} from "../features/employees/employees";
-import {useDispatch} from "react-redux";
-import {
-  handleAddEmployees,
-  handleRemoveMessage,
-} from "../features/employees/employees";
 
-const CreateEmployee = React.memo(({}) => {
+const EditModal = React.memo(() => {
+  const {selectedEmployee} = useSelector((state) => state.employees);
   const dispatch = useDispatch();
 
-  const [fullname, setFullName] = useState("");
-  const [gender, setGender] = useState("");
-  const [age, setAge] = useState("");
-  const [birthdate, setBirthDate] = useState("");
-  const [address, setAddress] = useState("");
-  const [contactnumber, setContactNumber] = useState("");
-  const [civilstatus, setCivilStatus] = useState("");
-  const [salary, setSalary] = useState("");
-  const [isactive, setIsActive] = useState(false);
+  const [fullname, setFullName] = useState(selectedEmployee.fullname);
+  const [gender, setGender] = useState(selectedEmployee.gender);
+  const [age, setAge] = useState(selectedEmployee.age);
+  const [birthdate, setBirthDate] = useState(selectedEmployee.birthdate);
+  const [address, setAddress] = useState(selectedEmployee.address);
+  const [contactnumber, setContactNumber] = useState(
+    selectedEmployee.contactnum
+  );
+  const [civilstatus, setCivilStatus] = useState(selectedEmployee.civilstat);
+  const [salary, setSalary] = useState(selectedEmployee.salary);
+  const [isactive, setIsActive] = useState(selectedEmployee.isactive);
   const [isNumberValid, setNumberValid] = useState(false);
   const [isFullNameValid, setFullNameValid] = useState(false);
   const [isSubmitFine, setIsSubmitFine] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (isFullNameValid && isNumberValid && civilstatus) {
-      console.log("Submit");
-      setIsSubmitFine(true);
-
-      const employee = {
-        fullname,
-        gender,
-        age,
-        birthdate,
-        salary,
-        isactive,
-        address,
-        contactnum: contactnumber,
-        civilstat: civilstatus,
-      };
-      dispatch(createEmployee({employee}));
-
-      const timer = setTimeout(() => dispatch(handleRemoveMessage()), 3000);
-      return () => clearTimeout(timer);
-    } else {
-      console.log("submit not working");
-      setIsSubmitFine(false);
-    }
   };
 
   const handleOnChange = (value, id) => {
@@ -95,14 +70,13 @@ const CreateEmployee = React.memo(({}) => {
   return (
     <>
       <div className="overlay"></div>
-      <div className="add-employee crud">
+      <div className="edit-modal crud">
         <header>
-          <h3>Add Employee</h3>
+          <h3>Edit Employee</h3>
           {isSubmitFine === false && (
             <h4 style={{color: "red"}}>Fill the fields with proper inputs!</h4>
           )}
         </header>
-
         <form onSubmit={handleSubmit}>
           <div className="input-contain">
             <input
@@ -127,7 +101,6 @@ const CreateEmployee = React.memo(({}) => {
               <p className="error-message">Invalid Input</p>
             )}
           </div>
-
           <div className="input-contain">
             <input
               id="address"
@@ -254,13 +227,19 @@ const CreateEmployee = React.memo(({}) => {
               onChange={() => setIsActive(!isactive)}
             />
           </div>
-
-          <button type="submit">Add Employee</button>
+          <div className="btn-container">
+            <button
+              onClick={() => dispatch(handleEditModal({employee: null}))}
+              type="button"
+            >
+              Cancel
+            </button>
+            <button type="submit">Edit</button>
+          </div>
         </form>
-        <button onClick={() => dispatch(handleAddEmployees())}>Cancel</button>
       </div>
     </>
   );
 });
 
-export default CreateEmployee;
+export default EditModal;

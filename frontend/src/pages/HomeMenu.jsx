@@ -3,16 +3,29 @@ import axios from "axios";
 import {useSelector, useDispatch} from "react-redux";
 import {getAllEmployees} from "../features/employees/employees";
 import Navbar from "../components/Navbar";
-import Employee from "../components/Employee";
 import {useTable} from "react-table";
 import {FaTrash, FaEdit} from "react-icons/fa";
 import CreateEmployee from "../components/CreateEmployee";
+import {
+  handleAddEmployees,
+  handleDeleteModal,
+  handleEditModal,
+} from "../features/employees/employees";
+import DeleteModal from "../components/DeleteModal";
+import EditModal from "../components/EditModal";
 
 const HomeMenu = React.memo(() => {
-  const [isAddEmployeeOpen, setAddEmployeeOpen] = useState(false);
-  const {employees, isFetchAllLoading, isFetchAllError} = useSelector(
-    (state) => state.employees
-  );
+  // const [isAddEmployeeOpen, setAddEmployeeOpen] = useState(false);
+  const {
+    employees,
+    isFetchAllLoading,
+    isFetchAllError,
+    isAddEmployeeOpen,
+    displayMessage,
+    isDisplayMessageOpen,
+    isDeleteModalOpen,
+    isEditModalOpen,
+  } = useSelector((state) => state.employees);
   const dispatch = useDispatch();
 
   const columns = useMemo(
@@ -66,6 +79,18 @@ const HomeMenu = React.memo(() => {
       data: employees,
     });
 
+  const handleEdit = (employee) => {
+    // Implement the logic to handle editing here
+    console.log("Edit:", employee);
+    dispatch(handleEditModal({employee}));
+  };
+
+  const handleDelete = (employee) => {
+    // Implement the logic to handle deletion here
+    console.log("Delete:", employee);
+    dispatch(handleDeleteModal({employee}));
+  };
+
   useEffect(() => {
     dispatch(getAllEmployees({x: "test"}));
   }, []);
@@ -76,7 +101,7 @@ const HomeMenu = React.memo(() => {
       <div className="middle-bar">
         <button
           onClick={() => {
-            setAddEmployeeOpen(true);
+            dispatch(handleAddEmployees());
           }}
         >
           Add Employee
@@ -130,9 +155,17 @@ const HomeMenu = React.memo(() => {
         </div>
       )}
 
-      {isAddEmployeeOpen && (
-        <CreateEmployee setAddEmployeeOpen={setAddEmployeeOpen} />
-      )}
+      {isAddEmployeeOpen && <CreateEmployee />}
+      {isDeleteModalOpen && <DeleteModal />}
+      {isEditModalOpen && <EditModal />}
+
+      <div
+        className={
+          isDisplayMessageOpen ? "success-modal showed" : "success-modal"
+        }
+      >
+        <h1>{displayMessage}</h1>
+      </div>
     </section>
   );
 });

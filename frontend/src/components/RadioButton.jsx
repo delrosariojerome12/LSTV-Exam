@@ -10,8 +10,8 @@ const RadioButton = React.memo(({setGender, gender}) => {
       <label className="radio-button-label">
         <input
           type="radio"
-          value="male"
-          checked={gender === "male"}
+          value="Male"
+          checked={gender === "Male"}
           onChange={handleGenderChange}
         />
         Male
@@ -19,8 +19,8 @@ const RadioButton = React.memo(({setGender, gender}) => {
       <label className="radio-button-label">
         <input
           type="radio"
-          value="female"
-          checked={gender === "female"}
+          value="Female"
+          checked={gender === "Female"}
           onChange={handleGenderChange}
         />
         Female
@@ -28,8 +28,8 @@ const RadioButton = React.memo(({setGender, gender}) => {
       <label className="radio-button-label">
         <input
           type="radio"
-          value="other"
-          checked={gender === "other"}
+          value="Other"
+          checked={gender === "Other"}
           onChange={handleGenderChange}
         />
         Other
