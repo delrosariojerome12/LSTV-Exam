@@ -22,17 +22,43 @@ export const getAllEmployees = createAsyncThunk(
 );
 export const createEmployee = createAsyncThunk(
   "/employees/createEmployee",
-  async ({user}, {rejectWithValue}) => {
-    console.log(user);
-    // try {
-    //   const url = "http://localhost/LSTV/backend/createEmployee.php";
-    //   const formData = new URLSearchParams();
+  async ({employee}, {rejectWithValue}) => {
+    try {
+      const url = "http://localhost/LSTV/backend/createEmployee.php";
+      const formData = new URLSearchParams();
+      const {
+        fullname,
+        gender,
+        age,
+        birthdate,
+        salary,
+        isactive,
+        address,
+        contactnum,
+        civilstat,
+      } = employee;
 
-    //   const {data: res} = await axios.post(url);
-    //   return res;
-    // } catch (error) {
-    //   rejectWithValue(error.message);
-    // }
+      formData.append("fullname", fullname);
+      formData.append("gender", gender);
+      formData.append("age", age);
+      formData.append("birthdate", birthdate);
+      formData.append("salary", salary);
+      formData.append("isactive", isactive);
+      formData.append("address", address);
+      formData.append("contactnum", contactnum);
+      formData.append("civilstat", civilstat);
+
+      const {data: res} = await axios.post(url, employee, {
+        headers: {
+          // "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(res);
+      return res;
+    } catch (error) {
+      rejectWithValue(error.message);
+    }
   }
 );
 
@@ -64,7 +90,7 @@ export const employeesReducer = createSlice({
       .addCase(createEmployee.fulfilled, (state, action) => {
         state.isFetchAllLoading = false;
         state.isFetchAllError = false;
-        state.employees = [...action.payload];
+        // state.employees = [...action.payload];
       })
       .addCase(createEmployee.rejected, (state, action) => {
         state.isFetchAllLoading = false;

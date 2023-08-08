@@ -1,8 +1,12 @@
 import React, {useState} from "react";
 import RadioButton from "./RadioButton";
 import CivilStatusComboBox from "./CivilStatusComboBox";
+import {createEmployee} from "../features/employees/employees";
+import {useDispatch} from "react-redux";
 
 const CreateEmployee = React.memo(({setAddEmployeeOpen}) => {
+  const dispatch = useDispatch();
+
   const [fullname, setFullName] = useState("");
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
@@ -11,18 +15,44 @@ const CreateEmployee = React.memo(({setAddEmployeeOpen}) => {
   const [contactnumber, setContactNumber] = useState("");
   const [civilstatus, setCivilStatus] = useState("");
   const [salary, setSalary] = useState("");
-  const [isActive, setIsActive] = useState("");
+  const [isactive, setIsActive] = useState(false);
   const [isNumberValid, setNumberValid] = useState(false);
+  const [isFullNameValid, setFullNameValid] = useState(false);
+  const [isSubmitFine, setIsSubmitFine] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Submit");
+
+    if (isFullNameValid && isNumberValid && civilstatus) {
+      console.log("Submit");
+      setIsSubmitFine(true);
+
+      const employee = {
+        fullname,
+        gender,
+        age,
+        birthdate,
+        salary,
+        isactive,
+        address,
+        contactnum: contactnumber,
+        civilstat: civilstatus,
+      };
+      dispatch(createEmployee({employee}));
+    } else {
+      console.log("submit not working");
+      setIsSubmitFine(false);
+    }
   };
 
   const handleOnChange = (value, id) => {
     switch (id) {
       case "fullname":
         setFullName(value);
+        const fullNameRegex = /^[A-Za-z\s]+$/;
+        const isFullNameValid = fullNameRegex.test(value);
+        isFullNameValid ? setFullNameValid(true) : setFullNameValid(false);
+        console.log(isFullNameValid);
         return;
       case "age":
         setAge(value);
@@ -35,8 +65,6 @@ const CreateEmployee = React.memo(({setAddEmployeeOpen}) => {
         const passwordRegex = /^(09|\+639)\d{9}$/;
         let isConctactValid = passwordRegex.test(value);
         isConctactValid ? setNumberValid(true) : setNumberValid(false);
-
-        console.log(isConctactValid);
         return;
       case "salary":
         setSalary(value);
@@ -63,6 +91,9 @@ const CreateEmployee = React.memo(({setAddEmployeeOpen}) => {
       <div className="add-employee crud">
         <header>
           <h3>Add Employee</h3>
+          {isSubmitFine === false && (
+            <h4 style={{color: "red"}}>Fill the fields with proper inputs!</h4>
+          )}
         </header>
 
         <form onSubmit={handleSubmit}>
@@ -85,6 +116,9 @@ const CreateEmployee = React.memo(({setAddEmployeeOpen}) => {
                 <div className={"text"}>FullName</div>
               </label>
             </div>
+            {!isFullNameValid && fullname.length > 0 && (
+              <p className="error-message">Invalid Input</p>
+            )}
           </div>
 
           <div className="input-contain">
@@ -171,11 +205,14 @@ const CreateEmployee = React.memo(({setAddEmployeeOpen}) => {
                 <div className={"text"}>Contact Number</div>
               </label>
             </div>
-            {!isNumberValid && <p className="error-message">Invalid Number</p>}
+            {!isNumberValid && contactnumber.length > 0 && (
+              <p className="error-message">Invalid Number</p>
+            )}
           </div>
 
           <div className="input-contain">
             <input
+              min={10000}
               id="salary"
               type="number"
               value={salary}
@@ -206,8 +243,8 @@ const CreateEmployee = React.memo(({setAddEmployeeOpen}) => {
             <input
               type="checkbox"
               name="isactive"
-              checked={isActive}
-              onChange={() => setIsActive(!isActive)}
+              checked={isactive}
+              onChange={() => setIsActive(!isactive)}
             />
           </div>
 

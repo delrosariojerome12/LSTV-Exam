@@ -454,13 +454,14 @@ button {
   height: 70rem;
   width: 80%;
   z-index: 4;
-  padding: 1rem;
+  padding: 2rem;
   display: grid;
   grid-template-rows: 5rem auto auto;
   gap: 1rem;
 }
 .home-menu .crud header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: 1rem;
 }
@@ -468,7 +469,7 @@ button {
   display: grid;
   gap: 1.5rem;
   overflow-y: auto;
-  border: solid 1px #000;
+  border: solid 1px #ccc;
   border-radius: 1rem;
   padding: 1rem;
 }

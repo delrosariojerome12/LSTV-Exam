@@ -26,6 +26,10 @@ const HomeMenu = React.memo(() => {
         accessor: "fullname",
       },
       {
+        Header: "Address",
+        accessor: "address",
+      },
+      {
         Header: "Gender",
         accessor: "gender",
       },

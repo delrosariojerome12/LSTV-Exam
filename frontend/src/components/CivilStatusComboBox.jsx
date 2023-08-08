@@ -11,19 +11,19 @@ const CivilStatusComboBox = React.memo(({civilstatus, setCivilStatus}) => {
   ];
 
   const handleCivilStatusChange = (selectedOption) => {
-    setCivilStatus(selectedOption);
+    setCivilStatus(selectedOption.value);
   };
 
   return (
     <div>
       <Select
-        value={civilstatus}
+        value={civilStatusOptions.find(
+          (option) => option.value === civilstatus
+        )}
         onChange={handleCivilStatusChange}
         options={civilStatusOptions}
         placeholder="Civil Status"
       />
-
-      {/* {civilstatus && <p>Selected Civil Status: {civilstatus.label}</p>} */}
     </div>
   );
 });
