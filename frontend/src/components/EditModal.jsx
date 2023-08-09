@@ -1,6 +1,10 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {editEmployee, handleEditModal} from "../features/employees/employees";
+import {
+  editEmployee,
+  handleEditModal,
+  handleRemoveMessage,
+} from "../features/employees/employees";
 import RadioButton from "./RadioButton";
 import CivilStatusComboBox from "./CivilStatusComboBox";
 
@@ -19,12 +23,35 @@ const EditModal = React.memo(() => {
   const [civilstatus, setCivilStatus] = useState(selectedEmployee.civilstat);
   const [salary, setSalary] = useState(selectedEmployee.salary);
   const [isactive, setIsActive] = useState(selectedEmployee.isactive);
-  const [isNumberValid, setNumberValid] = useState(false);
-  const [isFullNameValid, setFullNameValid] = useState(false);
+  const [isNumberValid, setNumberValid] = useState(true);
+  const [isFullNameValid, setFullNameValid] = useState(true);
   const [isSubmitFine, setIsSubmitFine] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (isFullNameValid && isNumberValid && civilstatus) {
+      console.log("Submit");
+      setIsSubmitFine(true);
+
+      const updatedEmployee = {
+        fullname,
+        gender,
+        age,
+        birthdate,
+        salary,
+        isactive,
+        address,
+        contactnum: contactnumber,
+        civilstat: civilstatus,
+      };
+      dispatch(editEmployee({recid: selectedEmployee.recid, updatedEmployee}));
+      const timer = setTimeout(() => dispatch(handleRemoveMessage()), 3000);
+      return () => clearTimeout(timer);
+    } else {
+      console.log("submit not working");
+      setIsSubmitFine(false);
+    }
   };
 
   const handleOnChange = (value, id) => {
@@ -223,7 +250,7 @@ const EditModal = React.memo(() => {
             <input
               type="checkbox"
               name="isactive"
-              checked={isactive}
+              checked={isactive === "1" ? true : false}
               onChange={() => setIsActive(!isactive)}
             />
           </div>

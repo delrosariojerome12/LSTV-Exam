@@ -135,7 +135,13 @@ const HomeMenu = React.memo(() => {
                 return (
                   <tr {...row.getRowProps()}>
                     {row.cells.map((cell) => (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      <td {...cell.getCellProps()}>
+                        {cell.column.Header === "isActive"
+                          ? cell.value === "1"
+                            ? "Yes"
+                            : "No"
+                          : cell.render("Cell")}
+                      </td>
                     ))}
                     <td>
                       <button onClick={() => handleEdit(row.original)}>

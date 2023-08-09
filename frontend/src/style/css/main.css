@@ -33,7 +33,6 @@ button {
 
 .container {
   height: 100vh;
-  background-color: #cfcfcf;
 }
 
 .navbar {
@@ -329,6 +328,7 @@ button {
   grid-template-rows: 10rem 8rem auto;
   gap: 1rem;
   overflow: hidden;
+  background-color: #cfcfcf;
 }
 .home-menu .middle-bar {
   grid-row: 2/3;

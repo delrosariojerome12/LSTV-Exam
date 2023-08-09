@@ -65,12 +65,13 @@ export const editEmployee = createAsyncThunk(
   "/employees/editEmployee",
   async ({recid, updatedEmployee}, {rejectWithValue}) => {
     try {
+      console.log(recid, updatedEmployee);
       const url = "http://localhost/LSTV/backend/editEmployee.php";
       const {data: res} = await axios.put(
         url,
         {
-          recid, // Pass the recid
-          ...updatedEmployee, // Pass the updated fields
+          recid,
+          ...updatedEmployee,
         },
         {
           headers: {
@@ -158,7 +159,7 @@ export const employeesReducer = createSlice({
         state.isFetchAllError = false;
         state.employees = [...action.payload];
         state.isDeleteModalOpen = false;
-        state.displayMessage = "Employee deleted successfully";
+        state.displayMessage = "Employee Deleted Successfully";
         state.isDisplayMessageOpen = true;
       })
       .addCase(deleteEmployee.rejected, (state, action) => {
@@ -175,19 +176,20 @@ export const employeesReducer = createSlice({
         state.isFetchAllError = false;
       })
       .addCase(editEmployee.fulfilled, (state, action) => {
+        console.log(action.payload);
         state.isFetchAllLoading = false;
         state.isFetchAllError = false;
         state.employees = [...action.payload];
-        state.isDeleteModalOpen = false;
-        state.displayMessage = "Employee deleted successfully";
+        state.displayMessage = "Employee Updated Successfully";
         state.isDisplayMessageOpen = true;
+        state.isEditModalOpen = false;
       })
       .addCase(editEmployee.rejected, (state, action) => {
         state.isFetchAllLoading = false;
         state.isFetchAllError = true;
-        state.isDeleteModalOpen = false;
         state.displayMessage = "Something went wrong";
         state.isDisplayMessageOpen = true;
+        state.isEditModalOpen = false;
       });
   },
 });
