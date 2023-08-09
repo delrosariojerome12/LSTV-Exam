@@ -27,14 +27,14 @@ Before you begin, ensure you have met the following requirements:
 ## Running the Application
 
 
-2. Place the entire folder of this code in the `htdocs` directory of your XAMPP installation folder (usually `C:\xampp\htdocs` on Windows).
-3. Start the PHP development server using XAMPP: run both Apache and MySQL services.
-4. Start the React Vite development server in the `frontend` directory: `npm run dev`.
-5. Open your web browser and access `http://localhost:3000` to use the application.
-6. Use these credentials to access the system:
+1. Place the entire folder of this code in the `htdocs` directory of your XAMPP installation folder (usually `C:\xampp\htdocs` on Windows).
+2. Start the PHP development server using XAMPP: run both Apache and MySQL services.
+3. Start the React Vite development server in the `frontend` directory: `npm run dev`.
+4. Open your web browser and access `http://localhost:3000` to use the application.
+5. Use these credentials to access the system:
    username: 'zero'
    password: '123'
 
 ## Note
 
-This project is for educational purposes and does not include a license. Use it responsibly and adhere to all relevant laws and regulations.
+This project is for application for work  and does not include a license. Use it responsibly and adhere to all relevant laws and regulations.
