@@ -12,10 +12,13 @@ Before you begin, ensure you have met the following requirements:
 - [Git](https://git-scm.com/downloads) for version control.
 
 ## Backend Setup
-
-1. Create a new database in MySQL named "employee_db".
-2. Import the `database.sql` file provided in the repository to set up the required tables.
-3. Update the database connection details in `backend/db_connect.php`. Make sure to set the correct hostname, username, password, and database name.
+1. Create a user for php-database connection using the following credentials:
+   username: 'zero'
+   password: '1234'
+   host: 'localhost'
+2. Create a new database in MySQL named "employee_db".
+3. Import the `employeedb.sql` file provided in the repository to set up the required tables.
+4. Update the database connection details in `backend/db_connect.php`. Make sure to set the correct hostname, username, password, and database name.
 
 ## Frontend Setup
 
