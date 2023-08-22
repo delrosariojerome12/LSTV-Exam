@@ -6,6 +6,7 @@ import HomeMenu from "./pages/HomeMenu";
 import PageNotFound from "./pages/PageNotFound";
 import {useSelector, useDispatch} from "react-redux";
 import {handleUserActive} from "./features/auth/auth";
+
 const App = React.memo(() => {
   const {user} = useSelector((state) => state.auth);
   const dispatch = useDispatch();
