@@ -22,6 +22,7 @@ export const getAllEmployees = createAsyncThunk(
       const {data: res} = await axios.get(url);
       return res;
     } catch (error) {
+      console.log(error);
       return rejectWithValue(error.message);
     }
   }
